@@ -1,0 +1,62 @@
+AGENDA 3000
+===========
+Archivos (todos en la misma carpeta):
+  agenda_pipboy.cpp   interfaz grafica
+  agenda_core.hpp     datos, rutinas, inventario y sincronizacion
+  agenda_notify.hpp   notificaciones de escritorio
+  agenda_games.hpp    logica de los minijuegos
+
+Necesitas SDL2 y SDL2_image (version 2.x, no la 3):
+  https://github.com/libsdl-org/SDL/releases           -> SDL2-devel-2.x.x-mingw.zip
+  https://github.com/libsdl-org/SDL_image/releases     -> SDL2_image-devel-2.x.x-mingw.zip
+
+WINDOWS: edita las dos rutas al principio de compilar_windows.bat y ejecutalo.
+         (MinGW-w64 con hilos "posix"; con MSYS2/WinLibs lo trae.)
+         Despues abre agenda_pipboy.exe con doble clic: NO abre la consola (cmd).
+         IMPORTANTE: hay que volver a compilar para que se aplique -mwindows.
+LINUX/MAC: ./compilar_linux_mac.sh
+
+Comando completo de Windows (ajusta las rutas). -mwindows evita la ventana de consola:
+g++ -std=c++17 -O2 agenda_pipboy.cpp -o agenda_pipboy.exe -I C:\SDL2\SDL2-2.32.8\x86_64-w64-mingw32\include -I C:\SDL2\SDL2_image-2.8.8\x86_64-w64-mingw32\include -L C:\SDL2\SDL2-2.32.8\x86_64-w64-mingw32\lib -L C:\SDL2\SDL2_image-2.8.8\x86_64-w64-mingw32\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lws2_32 -lshell32 -mwindows
+
+Comando completo de Linux/macOS:
+g++ -std=c++17 -O2 -pthread agenda_pipboy.cpp -o agenda_pipboy $(sdl2-config --cflags --libs) -lSDL2_image
+
+Mascota animada (opcional): guarda tu hoja de sprites junto al ejecutable como "mascota.png".
+
+TECLAS
+  1-8 vistas: Mes / Semana / Dia / Tareas / Notas / Rutina / Inventario / Juegos     T hoy   Q salir
+  Calendario (1-3): A anadir evento (hora, titulo, fin opcional y descripcion opcional)   J nueva tarea para ese dia
+     E editar un elemento del dia (ficha con campos numerados)   X borrar   O importar un agenda.txt (o arrastralo a la ventana)
+     Cuadrados del calendario: verde = evento, color = rutina, amarillo hueco = tarea pendiente
+  Semana: clic o TAB despliega el dia (otra vez, contrae)   K color de las rutinas   B avisos en el PC
+  Tareas (4): A nueva (nombre, fecha limite, hora, prioridad, descripcion)   ESPACIO/ENTER hecha   E editar   X borrar
+     P cambia la prioridad   F buscar   TAB o IZQ/DER pendientes-hechas. Las vencidas salen en rojo y en el dia de hoy.
+  Notas (5): A nueva   E editar   X borrar   P fijar arriba   + anade una linea   - borra la ultima   F buscar   IZQ/DER desplaza el texto
+  Rutinas (6): A nueva (dias, hora, nombre, "hasta" opcional, descripcion)   E editar   X omitir hoy
+  Inventario (7): A nuevo, E ruta, R nombre, D descripcion, L llevo, M aviso, F filtro, C color, +/- cantidad, X borrar
+     Dos fotos por objeto: I anade una foto (o arrastra un JPG/PNG); si ya hay una, pregunta cual es la principal.
+     W cambia la principal por la secundaria   Z quita la secundaria
+  En cualquier pregunta: ESC cancela (o termina, si ya se creo el elemento). En los textos largos escribe \n para un salto de linea.
+  Los textos que no caben se desplazan solos (marquesina).
+  S sincronizar (COM3, /dev/rfcomm0, IP:PUERTO, :PUERTO). Escribe TODAS (o "IP:PUERTO TODAS") para reenviar todas las fotos.
+
+SINCRONIZAR CON EL MOVIL (Android v1.3)
+  Viajan eventos, rutinas, tareas, notas, objetos, descripciones, fechas de fin y las fotos (hasta 2 por objeto).
+  Las fotos se reducen al enviarlas (256 px, JPEG) y solo se reenvian las cambiadas desde la ultima sincronizacion con ese destino
+  (se anota en agenda_peers.txt). Si una foto no se puede leer, no se envia su conjunto, asi no se borran las del otro equipo.
+  Las rutas de las fotos son locales: nunca viajan entre equipos. Las fotos recibidas se guardan en la carpeta "imagenes".
+  Fusion: gana el cambio mas reciente (en empate, el borrado). Con un movil con la version anterior sigue funcionando: lo nuevo
+  simplemente no se envia a ese lado.
+
+MINIJUEGOS (pestana 8)   J1: W A S D + ESPACIO    J2: FLECHAS + ENTER    (en 1 jugador valen las dos)
+  HACKEO   elige la palabra clave; cada fallo dice cuantas letras coinciden. 4 intentos. Coop: se turnan.
+  GANZUA   A/D mueve la ganzua, mantener ESPACIO/ENTER gira. Coop: J1 mueve la ganzua, J2 gira.
+  DEFENSA  intercepta misiles. Raton o teclado. Coop: dos bases y dos miras.
+  Los records se guardan en agenda_juegos.txt
+
+ACTUALIZAR DESDE LA VERSION ANTERIOR
+  1. Haz una copia de agenda.txt (por si acaso).
+  2. Sustituye agenda_pipboy.cpp, agenda_core.hpp, agenda_notify.hpp, agenda_games.hpp y compilar_windows.bat y vuelve a compilar.
+  3. Tus datos se conservan: agenda.txt se amplia solo con lineas nuevas (X, K, N, P) y las carpetas de imagenes no cambian.
+  Hace falta SDL2_image 2.6 o superior (IMG_SaveJPG), que es lo que ya usas (2.8.x).
