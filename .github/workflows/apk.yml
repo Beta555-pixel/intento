@@ -23,6 +23,7 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           accept-android-sdk-licenses: true
+          packages: 'platform-tools'
 
       - name: Configurar Gradle
         uses: gradle/actions/setup-gradle@v3
