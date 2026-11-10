@@ -1,0 +1,66 @@
+AGENDA 3000 - APLICACION ANDROID (proyecto nativo)
+===================================================
+Es una app Android real (APK): ventana propia, avisos del sistema aunque la app este cerrada, compartir/importar
+archivos y sincronizacion por Bluetooth o red/cable USB con el programa de PC.
+Por dentro: una actividad con WebView que carga app/src/main/assets/index.html + codigo Kotlin en app/src/main/java/com/agenda3000.
+
+COMO OBTENER EL APK (elige una)
+-------------------------------
+A) Android Studio (Windows)
+   1. Instala Android Studio: https://developer.android.com/studio
+   2. File > Open > selecciona esta carpeta. Espera a que termine "Gradle sync" (descarga SDK y Gradle la primera vez).
+   3. Build > Build Bundle(s) / APK(s) > Build APK(s) > pulsa "locate".
+      El archivo es app/build/outputs/apk/debug/app-debug.apk
+   4. Pasalo al movil (cable USB, Bluetooth, Drive), abrelo y permite "Instalar apps desconocidas" para ese origen.
+
+B) Sin instalar nada: GitHub Actions (en la nube)
+   1. Crea un repositorio en GitHub y sube TODO el contenido de esta carpeta (incluida la carpeta oculta .github).
+   2. Pestana Actions > "APK" > Run workflow (tambien se ejecuta solo al subir).
+   3. Al terminar, descarga el artefacto "agenda3000-apk": dentro esta app-debug.apk.
+
+PRIMER USO
+  - Concede el permiso de notificaciones. Para avisos puntuales a la hora exacta, en Ajustes (engranaje de la app) >
+    "AVISOS DEL SISTEMA: PERMITIR" (en algunos moviles pide tambien "Alarmas y recordatorios").
+  - Si tu fabricante limita las apps en segundo plano (Xiaomi, Huawei, Samsung...), desactiva el ahorro de bateria para AGENDA 3000.
+  - La app programa los avisos de los proximos 14 dias cada vez que cambias algo: abrela de vez en cuando.
+  - Los datos viven dentro de la app: si la desinstalas se borran. Usa Ajustes > ENVIAR AGENDA como copia de seguridad.
+
+SINCRONIZAR CON EL PROGRAMA DE PC (Ajustes de la app > SINCRONIZAR ...)
+  CABLE USB (el mas fiable): en el movil activa "Anclaje USB" (Ajustes > Conexiones > Zona Wi-Fi y anclaje).
+     Movil: Ajustes > SINCRONIZAR POR RED / CABLE USB > escribe  :5050  (espera).
+     PC:    en el programa pulsa S y escribe  IP_DEL_MOVIL:5050
+            (IP del movil = "Puerta de enlace predeterminada" del adaptador nuevo en  ipconfig, p. ej. 192.168.42.129).
+  WI-FI: igual, con el movil y el PC en la misma red (IP del movil en Ajustes > Estado).
+  BLUETOOTH: empareja movil y PC. En Windows: Configuracion > Bluetooth y dispositivos > Mas opciones de Bluetooth >
+     Puertos COM > Agregar > Entrante, y anota el COMx. En el PC pulsa S y escribe COMx (queda esperando);
+     en el movil: Ajustes > SINCRONIZAR POR BLUETOOTH > elige el PC.
+  Se fusionan eventos, rutinas y objetos (gana el cambio mas reciente; se compensa la diferencia de reloj).
+  Desde la v1.3 tambien viajan las fotos del inventario (hasta 2 por objeto), con el programa de PC v2. Tambien puedes usar ENVIAR AGENDA / IMPORTAR ARCHIVO con agenda.txt (ese archivo no lleva fotos).
+
+NOVEDADES DE LA VERSION 1.1
+---------------------------
+  - DESCRIPCION en todo: eventos, rutinas, tareas, objetos del inventario y notas (toca un elemento para verla o editarla; 📝 indica que tiene).
+  - FECHA DE FINALIZACION: los eventos pueden terminar otro dia (y a otra hora) y salen en todos los dias del rango;
+    las rutinas pueden tener una fecha "hasta" y dejan de repetirse despues (las terminadas se ven atenuadas).
+  - TAREAS (pestana TAR): fecha limite y hora opcionales, prioridad, casilla de hecha, avisos, y salen en el calendario (cuadrado amarillo).
+    Las vencidas se marcan en rojo y aparecen en el dia de hoy.
+  - NOTAS (pestana NOT): notas libres con titulo y texto, se pueden fijar arriba y buscar.
+  - Todo se guarda en agenda.txt y se sincroniza con el PC. El programa de PC actual ignora (sin romperse) las lineas nuevas X|, K| y N|:
+    la descripcion, la fecha de fin, las tareas y las notas se conservan en el movil, pero el PC todavia no las muestra.
+  - Actualiza instalando encima: tus datos y fotos se conservan.
+
+NOVEDADES DE LA VERSION 1.2
+---------------------------
+  - Textos largos: si un titulo, descripcion, nombre de objeto, ruta o rutina no cabe en su hueco, se queda en una sola linea y se
+    desplaza hacia la izquierda en bucle continuo, para poder leerlo entero sin cambiar el tamano de nada.
+    (Si en el movil esta activado "Quitar animaciones", se muestra cortado con puntos suspensivos.) Tocar el elemento sigue abriendo su formulario.
+  - Las descripciones se muestran completas en las listas (antes se cortaban a 140 caracteres).
+
+NOVEDADES DE LA VERSION 1.3
+---------------------------
+  - Las fotos del inventario viajan al sincronizar (en los dos sentidos). Solo se reenvian las cambiadas desde la ultima sincronizacion
+    con ese destino. Ajustes > "FOTOS: SOLO LAS CAMBIADAS" lo cambia a "TODAS EN LA PROXIMA SYNC" para forzar el envio completo.
+  - Si una foto no se puede leer, no se envia su conjunto (para no borrar las del otro equipo). Se rechaza una foto de mas de 200000 caracteres.
+  - El programa de PC v2 ya muestra tareas, notas, descripciones, fechas de fin y dos fotos por objeto, igual que el movil.
+  - Actualiza instalando encima: tus datos y fotos se conservan. Con un PC sin actualizar sigue funcionando (no recibe lo nuevo).
+  - Nota: esta version no se ha podido compilar ni probar en un movil real; la logica de sincronizacion se probo contra el nucleo del PC.

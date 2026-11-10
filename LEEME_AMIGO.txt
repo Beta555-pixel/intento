@@ -1,0 +1,40 @@
+AGENDA 3000 - INSTALACION EN EL MOVIL Y EL PORTATIL DE UN AMIGO
+================================================================
+
+QUE NECESITAS (UNA SOLA VEZ, EN TU CUENTA DE GITHUB)
+  Este paquete no lleva programas ya compilados: se compilan gratis en GitHub y te bajas dos archivos.
+  1. Sube esta carpeta entera a un repositorio de GitHub (el mismo que ya usas para el APK vale).
+  2. Pestana "Actions": se ejecutan solas "APK" y "PC-Windows" (o pulsa "Run workflow" en cada una).
+  3. Cuando acaben, entra en cada ejecucion y baja los resultados (abajo, "Artifacts"):
+       agenda3000-apk              -> contiene app-debug.apk   (el movil Android, de cualquier marca)
+       agenda3000-pc-windows       -> contiene la carpeta AGENDA3000_PC (el portatil con Windows)
+  Mandale a tu amigo esos dos archivos (y la seccion de abajo).
+
+---- PARA TU AMIGO ----
+
+MOVIL ANDROID (cualquier marca: Samsung, Xiaomi, Huawei, Motorola, Pixel...; Android 8 o superior)
+  1. Copia app-debug.apk al movil (WhatsApp, Telegram, correo, cable o Drive) y tocalo para abrirlo.
+  2. Android preguntara si permite instalar desde esa aplicacion (la que usaste para abrirlo). Aceptalo solo para esa vez:
+     es el aviso normal de cualquier APK fuera de la tienda. No cambia ningun otro ajuste. Luego puedes quitar ese permiso
+     en Ajustes > Aplicaciones > (esa app) > Instalar apps desconocidas.
+  3. Abre AGENDA 3000. Empieza vacia: tus datos y los de tu amigo estan separados.
+  4. Los permisos (notificaciones, alarmas, Bluetooth) solo se piden al usar esas funciones. Si los rechazas, la agenda
+     funciona igual (sin avisos). No se modifica nada del sistema.
+  Para quitarla: manten pulsado el icono > Desinstalar. Se borra todo lo suyo y no deja nada.
+
+PORTATIL CON WINDOWS (10 u 11, 64 bits)
+  1. Descomprime la carpeta AGENDA3000_PC donde quieras (escritorio, un pendrive...). No se instala nada.
+  2. Doble clic en agenda_pipboy.exe.
+     Si Windows muestra "Windows protegio su PC" (el programa no esta firmado): "Mas informacion" > "Ejecutar de todos modos".
+  3. Todo lo que guarda (agenda.txt, fotos, ajustes del programa) queda DENTRO de esa carpeta.
+     No toca el registro ni ninguna configuracion de Windows.
+  Para quitarlo: borra la carpeta.
+  Si el portatil no es Windows (Mac/Linux): en la carpeta pc hay compilar_linux_mac.sh (hace falta SDL2 y SDL2_image).
+
+SINCRONIZAR MOVIL Y PORTATIL
+  Misma wifi: en el portatil pulsa S y escribe :5050 (espera). En el movil: Ajustes (engranaje) > SINCRONIZAR POR RED / CABLE USB > IP-DEL-PORTATIL:5050.
+  Por Bluetooth: ver el LEEME de cada version (carpeta pc y LEEME.txt). Las fotos viajan tambien.
+  Aviso: el firewall de Windows puede preguntar si permite la conexion; es solo para la sincronizacion.
+
+PRIVACIDAD
+  El paquete NO contiene tu agenda ni tus fotos: el proyecto se entrega vacio.

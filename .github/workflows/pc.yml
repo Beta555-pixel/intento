@@ -1,0 +1,32 @@
+name: PC-Windows
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: false
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-SDL2
+            mingw-w64-x86_64-SDL2_image
+      - name: Compilar
+        run: |
+          cd pc
+          RES=""
+          if windres agenda.rc -O coff -o agenda_res.o; then RES=agenda_res.o; fi
+          g++ -std=c++17 -O2 agenda_pipboy.cpp $RES -o agenda_pipboy.exe $(sdl2-config --cflags) -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lws2_32 -lshell32 -mwindows
+          mkdir -p ../dist/AGENDA3000_PC
+          cp agenda_pipboy.exe LEEME.txt ../dist/AGENDA3000_PC/
+          ldd agenda_pipboy.exe | grep -i '/mingw64/' | awk '{print $3}' | xargs -I{} cp {} ../dist/AGENDA3000_PC/
+          ls ../dist/AGENDA3000_PC
+      - uses: actions/upload-artifact@v4
+        with:
+          name: agenda3000-pc-windows
+          path: dist
